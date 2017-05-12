@@ -21,6 +21,7 @@ namespace CoderCardsLibrary
             [Blob("%input-container%/{BlobName}", FileAccess.Read)] byte[] image, 
             [Blob("%output-container%/{BlobName}", FileAccess.Write)] Stream outputBlob, TraceWriter log)
         {
+            log.Info($"[PRE] Person Name: {cardInfo.PersonName}, Title: {cardInfo.Title}, Blob Name: {cardInfo.BlobName}");
             Emotion[] faceDataArray = await RecognizeEmotionAsync(image, log);
 
             if (faceDataArray == null) { 
@@ -39,7 +40,7 @@ namespace CoderCardsLibrary
             var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score); // assume exactly one face
 
             MergeCardImage(card, image, personName, title, score);
-
+            log.Info($"[POST] Person Name: {personName}, Title: {title}, Score: {score}");
             SaveAsJpeg(card, outputBlob);
         }
 
