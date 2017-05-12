@@ -102,7 +102,7 @@ namespace CoderCardsLibrary
             // Trim any weird starting characters
             if(name.StartsWith(" "))
             {
-                name = name.Substring(name.LastIndexOf(" ")+1);
+                name = name.Trim();
             }
             return name;
         }
