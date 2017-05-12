@@ -33,10 +33,12 @@ namespace CoderCardsLibrary
                 return;
             }
 
+            var personName = cleanName(cardInfo.PersonName);
+            var title = cardInfo.Title;
             var faceData = faceDataArray[0]; 
             var card = GetCardImageAndScores(faceDataArray[0].Scores, out double score); // assume exactly one face
 
-            MergeCardImage(card, image, cardInfo.PersonName, cardInfo.Title, score);
+            MergeCardImage(card, image, personName, title, score);
 
             SaveAsJpeg(card, outputBlob);
         }
@@ -92,6 +94,16 @@ namespace CoderCardsLibrary
             public string PersonName { get; set; }
             public string Title { get; set; }
             public string BlobName { get; set; }
+        }
+
+        static string cleanName(string name)
+        {
+            // Trim any weird starting characters
+            if(name.StartsWith(" "))
+            {
+                name = name.Substring(name.LastIndexOf(" ")+1);
+            }
+            return name;
         }
 
         static async Task<Emotion[]> RecognizeEmotionAsync(byte[] image, TraceWriter log)
